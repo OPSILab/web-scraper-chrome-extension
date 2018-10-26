@@ -1,46 +1,144 @@
 <div id="edit-sitemap">
 	<form class="form-horizontal" role="form" id="edit-sitemap-metadata-form">
+		
 		<div class="form-group">
-			<label for="edit_sitemap_id" class="col-lg-1 control-label">Sitemap name</label>
-
-			<div class="col-lg-10">
-				<input type="text" class="form-control" name="_id" id="edit_sitemap_id" placeholder="Sitemap name" value="{{_id}}">
+			<label for="edit_sitemap_id" class="col-lg-1 control-label">
+				Sitemap name
+			</label>
+			<div class="input-group col-lg-3">
+				<div class="col-lg-10">
+					<input type="text" class="form-control" name="_id" id="edit_sitemap_id" placeholder="Sitemap name" value="{{_id}}">
+				</div>
 			</div>
+		</div>
+		
+		<div class="form-group">
+			
+			<label for="edit_sitemap_navparam_name" class="col-lg-1 control-label">
+				Nav Param Name
+			</label>
+			<div class="input-group col-lg-3">
+				<div class="col-lg-10">
+					<input type="text" class="form-control" name="NavParamName" id="edit_sitemap_navparam_name" placeholder="Navigation Parameter Name" value="{{_navParamName}}">
+				</div>
+				<div class="col-lg-2">
+					 <span class="input-group-btn"> 
+						<a href="#" role="button" class="btn btn-info btn-xs popovers" data-trigger="focus" data-toggle="popover"  title=""
+						   data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/administration_gui/index.html#add-a-catalogue' title='test add link'>documentation</a>" 
+						   data-original-title="Navigation parameter name (e.g. <strong>'id'</strong>), whose value will give the dataset page (e.g. <strong>'id=1'</strong>)""><span class="glyphicon glyphicon-question-sign"></span></a>
+					</span>
+				</div>
+			</div>
+		</div>
+					
+		<div class="form-group">
+				<label for="edit_sitemap_navParam_type" class="col-lg-1 control-label">
+					Nav Param Type
+				</label>
+				<div class="input-group col-lg-3">
+					<div class="col-lg-10">
+					    <select class="form-control" id="edit_sitemap_navParam_type" name="NavParamType">
+					      <option value="QUERY_PAGE">QUERY PAGE</option>
+					      <option value="PATH_PAGE">PATH PAGE</option>
+					    </select>
+	 				</div>
+	 				<div class="col-lg-2">
+		 				 <span class="input-group-btn"> 
+							<a href="#" role="button" class="btn btn-info btn-xs popovers" data-trigger="focus" data-toggle="popover"   title=""
+							   data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/administration_gui/index.html#add-a-catalogue' title='test add link'>documentation</a>" 
+							   data-original-title="Navigation parameter name (e.g. <strong>'id'</strong>), whose value will give the dataset page (e.g. <strong>'id=1'</strong>)""><span class="glyphicon glyphicon-question-sign"></span></a>
+						</span>
+	 				</div>
+ 				</div>
+		</div>
+		
+		<div class="form-group">
+				<label for="edit_sitemap_navParam_startValue" class="col-lg-1 control-label">
+					Nav Param Start
+				</label>
+				<div class="input-group col-lg-3">
+					<div class="col-lg-10">
+						<input type="text" class="form-control" name="NavParamStartValue" id="edit_sitemap_navParam_startValue" placeholder="Navigation Parameter Start Value" value="{{_navParamStartValue}}">
+					</div>
+					<div class="col-lg-2">
+		 				 <span class="input-group-btn"> 
+							<a href="#" role="button" class="btn btn-info btn-xs popovers" data-trigger="focus" data-toggle="popover"  title=""
+							   data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/administration_gui/index.html#add-a-catalogue' title='test add link'>documentation</a>" 
+							   data-original-title="Navigation parameter name (e.g. <strong>'id'</strong>), whose value will give the dataset page (e.g. <strong>'id=1'</strong>)""><span class="glyphicon glyphicon-question-sign"></span></a>
+						</span>
+	 				</div>
+					
+				</div>
+		</div>
+		<div class="form-group">
+				<label for="edit_sitemap_navParam_endValue" class="col-lg-1 control-label">
+					Nav Param End
+				</label>
+				<div class="input-group col-lg-3">
+					<div class="col-lg-10">
+						<input type="text" class="form-control" name="NavParamEndValue" id="edit_sitemap_navParam_endValue" placeholder="Navigation Parameter End Value" value="{{_navParamEndValue}}">
+					</div>
+					<div class="col-lg-2">
+			 				 <span class="input-group-btn"> 
+								<a href="#" role="button" class="btn btn-info btn-xs popovers" data-trigger="focus" data-toggle="popover"  title=""
+								   data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/administration_gui/index.html#add-a-catalogue' title='test add link'>documentation</a>" 
+								   data-original-title="Navigation parameter name (e.g. <strong>'id'</strong>), whose value will give the dataset page (e.g. <strong>'id=1'</strong>)""><span class="glyphicon glyphicon-question-sign"></span></a>
+							</span>
+		 			</div>
+				</div>
 		</div>
 		{{#startUrl.push}}
 			{{#startUrl}}
-				<div class="form-group start-url-block">
+				<div class="form-group">
 					<label class="col-lg-1 control-label">Start URL</label>
-					<div class="col-lg-10">
+					<div class="col-lg-4">
 						<div class="input-group">
 							<input type="text" class="form-control input-start-url" name="startUrl[]" placeholder="URL" value="{{.}}">
-						<span class="input-group-btn">
-							<button class="btn btn-default remove-start-url" type="button">-</button>
-							<button class="btn btn-default add-extra-start-url" type="button">+</button>
-						</span>
+<!-- 						<span class="input-group-btn"> -->
+<!-- 							<button class="btn btn-default remove-start-url" type="button">-</button> -->
+<!-- 							<button class="btn btn-default add-extra-start-url" type="button">+</button> -->
+<!-- 						</span> -->
 						</div>
 					</div>
 				</div>
 			{{/startUrl}}
 		{{/startUrl.push}}
 		{{^startUrl.push}}
-			<div class="form-group start-url-block">
+			<div class="form-group">
 				<label class="col-lg-1 control-label">Start URL</label>
-				<div class="col-lg-10">
-					<div class="input-group">
+				<div class="input-group col-lg-3">
+					<div class="col-lg-10">
+						
 						<input type="text" class="form-control input-start-url" name="startUrl[]" placeholder="URL" value="{{startUrl}}">
-							<span class="input-group-btn">
-								<button class="btn btn-default remove-start-url" type="button">-</button>
-								<button class="btn btn-default add-extra-start-url" type="button">+</button>
-							</span>
+		<!-- 							<span class="input-group-btn"> -->
+		<!-- 								<button class="btn btn-default remove-start-url" type="button">-</button> -->
+		<!-- 								<button class="btn btn-default add-extra-start-url" type="button">+</button> -->
+		<!-- 							</span> -->
 					</div>
+					<div class="col-lg-2">
+			 				 <span class="input-group-btn"> 
+								<a href="#" role="button" class="btn btn-info btn-xs popovers" data-trigger="focus" data-toggle="popover"  title=""
+								   data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/administration_gui/index.html#add-a-catalogue' title='test add link'>documentation</a>" 
+								   data-original-title="Navigation parameter name (e.g. <strong>'id'</strong>), whose value will give the dataset page (e.g. <strong>'id=1'</strong>)""><span class="glyphicon glyphicon-question-sign"></span></a>
+							</span>
+		 			</div>
 				</div>
 			</div>
 		{{/startUrl.push}}
 		<div class="form-group">
-			<div class="col-lg-offset-1 col-lg-10">
-				<button type="submit" class="btn btn-primary" id="submit-edit-sitemap">Save Sitemap</button>
+			<div class="center col-lg-offset-2 col-lg-2">
+				<button type="submit" class="btn btn-primary " id="submit-edit-sitemap">Save Sitemap</button>
 			</div>
+			
+		</div>
+		<div style="font-size:15px;" class="text-center well well-sm">Click <span class="glyphicon glyphicon-question-sign"></span> buttons to get further information. <a href="https://idra.readthedocs.io" target="_blank"> (Idra ReadTheDocs).</a>
 		</div>
 	</form>
+	
 </div>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+    $("[data-toggle=popover]").popover({html:true,  container: 'body'});
+});
+</script>

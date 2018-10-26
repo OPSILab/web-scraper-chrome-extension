@@ -158,7 +158,45 @@ Sitemap.prototype = {
 	exportSitemap: function () {
 		var sitemapObj = JSON.parse(JSON.stringify(this));
 		delete sitemapObj._rev;
+		
+		var sitemapSelectors = sitemapObj['selectors'];
+	
+		var lastPage = undefined;
+		var datasetUrl = undefined;
+		
+		// Extract lastPage and datasetUrl selectors and put in a separated pageSelectors array
+		for( var i = 0; i < sitemapSelectors.length-1; i++){ 
+			let elem = sitemapSelectors[i]; 
+			if(elem.id == 'lastPage'){
+				lastPage = elem;
+				sitemapSelectors.splice(i, 1); 
+			}
+			
+			if(elem.id == 'datasetUrl'){
+				datasetUrl = elem;
+				sitemapSelectors.splice(i, 1); 
+			}
+		}
+		
+		if (!lastPage || !datasetUrl){
+			alert("Invalid Sitemap: lastPage and datasetUrl selectors are mandatory!");
+			return '{}';
+		}
+		
+		//All the Navigation parameter fiels should be there, validated in the edit metadata part.
+		var navigationParameter = {
+				name : sitemapObj.navParamName,
+				type : sitemapObj.navParamType,
+				startValue : sitemapObj.navParamStartValue,
+				endValue : sitemapObj.navParamEndValue,
+				pagesSelectors: [lastPage, datasetUrl]
+		};
+		
+		sitemapObj.datasetSelectors = sitemapObj['selectors'];
+		delete sitemapObj['selectors'];
+		
 		return JSON.stringify(sitemapObj);
+		
 	},
 	importSitemap: function (sitemapJSON) {
 		var sitemapObj = JSON.parse(sitemapJSON);

@@ -421,6 +421,12 @@ SitemapController.prototype = {
 	getSitemapFromMetadataForm: function(){
 
 		var id = $("#viewport form input[name=_id]").val();
+		var navParamName = $("#viewport form input[name=NavParamName]").val();
+		var navParamType = $("#viewport form input[name=NavParamType]").val();
+		var navParamStartValue = $("#viewport form input[name=NavParamStartValue]").val();
+		var navParamEndValue = $("#viewport form input[name=NavParamStartValue]").val();
+		
+		
 		var $startUrlInputs = $("#viewport form .input-start-url");
 		var startUrl;
 		if($startUrlInputs.length === 1) {
@@ -435,6 +441,10 @@ SitemapController.prototype = {
 
 		return {
 			id:id,
+			navParamName:navParamName,
+			navParamType: navParamType,
+			navParamStartValue: navParamStartValue,
+			navParamEndValue: navParamEndValue,
 			startUrl:startUrl
 		};
 	},
@@ -502,6 +512,7 @@ SitemapController.prototype = {
 		this.setActiveNavigationButton('sitemap-edit-metadata');
 
 		var sitemap = this.state.currentSitemap;
+		
 		var $sitemapMetadataForm = ich.SitemapEditMetadata(sitemap);
 		$("#viewport").html($sitemapMetadataForm);
 		this.initMultipleStartUrlHelper();
@@ -529,7 +540,14 @@ SitemapController.prototype = {
 
 			// change data
 			sitemap.startUrl = sitemapData.startUrl;
-
+			sitemap.navParamName = sitemapData.navParamName;
+			sitemap.navParamType = sitemapData.navParamType;
+			sitemap.navParamStartValue = sitemapData.navParamStartValue;
+			sitemap.navParamEndValue = sitemapData.navParamEndValue;
+			
+			
+			
+			
 			// just change sitemaps url
 			if (sitemapData.id === sitemap._id) {
 				this.store.saveSitemap(sitemap, function (sitemap) {
@@ -1089,7 +1107,7 @@ SitemapController.prototype = {
 		var selector = this.getCurrentlyEditedSelector();
 		var currentStateParentSelectorIds = this.getCurrentStateParentSelectorIds();
 		var parentCSSSelector = sitemap.selectors.getParentCSSSelectorWithinOnePage(currentStateParentSelectorIds);
-
+		
 		var deferredSelector = this.contentScript.selectSelector({
 			parentCSSSelector: parentCSSSelector,
 			allowedElements: selector.getItemCSSSelector()
