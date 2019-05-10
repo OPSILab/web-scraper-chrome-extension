@@ -63,7 +63,6 @@ Store.prototype = {
         if(!sitemap._id) {
             console.log("cannot save sitemap without an id", sitemap);
         }
-
         this.sitemapDb.put(sitemapJson, function(sitemap, err, response) {
             // @TODO handle err
             sitemap._rev = response.rev;
