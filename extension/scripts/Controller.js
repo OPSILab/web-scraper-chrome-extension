@@ -300,7 +300,7 @@ SitemapController.prototype = {
                         },
                         stringLength: {
                             min: 3,
-                            message: 'The sitemap id should be atleast 3 characters long'
+                            message: 'The sitemap id should be at least 3 characters long'
                         },
                         regexp: {
                             regexp: /^[a-z][a-z0-9_\$\(\)\+\-/]+$/,
@@ -346,7 +346,7 @@ SitemapController.prototype = {
                     validators: {
                         stringLength: {
                             min: 3,
-                            message: 'The sitemap id should be atleast 3 characters long'
+                            message: 'The sitemap id should be at least 3 characters long'
                         },
                         regexp: {
                             regexp: /^[a-z][a-z0-9_\$\(\)\+\-/]+$/,
@@ -426,7 +426,8 @@ SitemapController.prototype = {
         var navParamStartValue = $("#viewport form input[name=navParamStartValue]").val();
         var navParamEndValue = $("#viewport form input[name=navParamEndValue]").val();
         var navParamPagesNumber = $("#viewport form input[name=navParamPagesNumber]").val();
-    
+        var navParamDatasetsPerPage = $("#viewport form input[name = navParamDatasetsPerPage]").val();
+
         var $startUrlInputs = $("#viewport form .input-start-url");
         var startUrl;
         if ($startUrlInputs.length === 1) {
@@ -446,6 +447,7 @@ SitemapController.prototype = {
             navParamStartValue: navParamStartValue,
             navParamEndValue: navParamEndValue,
             navParamPagesNumber: navParamPagesNumber,
+            navParamDatasetsPerPage: navParamDatasetsPerPage,
             startUrl: startUrl
         };
     },
@@ -489,10 +491,10 @@ SitemapController.prototype = {
         // load data from form
         var sitemapJSON = $("[name=sitemapJSON]").val();
         var id = $("input[name=_id]").val();
-       
+
         var sitemap = new Sitemap();
         sitemap.importSitemap(sitemapJSON);
-        
+
 
         if (id.length) {
             sitemap._id = id;
@@ -510,7 +512,6 @@ SitemapController.prototype = {
             }
         }.bind(this));
     },
-
     editSitemapMetadata: function (button) {
 
         this.setActiveNavigationButton('sitemap-edit-metadata');
@@ -518,9 +519,11 @@ SitemapController.prototype = {
         var sitemap = this.state.currentSitemap;
         var $sitemapMetadataForm = ich.SitemapEditMetadata(sitemap);
         $("#viewport").html($sitemapMetadataForm);
+        $("#edit_sitemap_navParam_type").val(sitemap.navParamType);
+        $("#edit_sitemap_navParam_type").change();
         this.initMultipleStartUrlHelper();
         this.initSitemapValidation();
-
+    
         return true;
     },
 
@@ -549,7 +552,7 @@ SitemapController.prototype = {
             sitemap.navParamStartValue = sitemapData.navParamStartValue;
             sitemap.navParamEndValue = sitemapData.navParamEndValue;
             sitemap.navParamPagesNumber = sitemapData.navParamPagesNumber;
-
+            sitemap.navParamDatasetsPerPage = sitemapData.navParamDatasetsPerPage;
 
 
             // just change sitemaps url
@@ -651,7 +654,7 @@ SitemapController.prototype = {
                         },
                         stringLength: {
                             min: 3,
-                            message: 'The sitemap id should be atleast 3 characters long'
+                            message: 'The sitemap id should be at least 3 characters long'
                         },
                         regexp: {
                             regexp: /^[^_].*$/,
@@ -984,7 +987,7 @@ SitemapController.prototype = {
                             message: 'The request interval must be numeric'
                         },
                         callback: {
-                            message: 'The request interval must be atleast 2000 milliseconds',
+                            message: 'The request interval must be at least 2000 milliseconds',
                             callback: function (value, validator) {
                                 return value >= 2000;
                             }
@@ -1000,7 +1003,7 @@ SitemapController.prototype = {
                             message: 'The page laod delay must be numeric'
                         },
                         callback: {
-                            message: 'The page load delay must be atleast 500 milliseconds',
+                            message: 'The page load delay must be at least 500 milliseconds',
                             callback: function (value, validator) {
                                 return value >= 500;
                             }

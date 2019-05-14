@@ -24,11 +24,10 @@
                 <div class="col-lg-2">
                     <span class="input-group-btn">
                         <a href="#" role="button" class="btn btn-info btn-xs popovers" data-trigger="focus" data-toggle="popover" title=""
-                           data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/administration_gui/index.html#add-a-catalogue' title='test add link'>documentation</a>"
-                           data-original-title="Navigation parameter name (e.g. <strong>'id'</strong>), whose value will give the dataset page (e.g. <strong>'id=1'</strong>)" "><span class="glyphicon glyphicon-question-sign">
+                           data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/scraping/index.html' title='test add link'>documentation</a>"
+                           data-original-title="Navigation parameter name (e.g. <strong>'id'</strong>), whose value will give the dataset page (e.g. <strong>'id=1'</strong>)" "><span class="glyphicon glyphicon-question-sign" />
                         </a>
                     </span>
-
                 </div>
             </div>
         </div>
@@ -49,11 +48,10 @@
                 <div class="col-lg-2">
                     <span class="input-group-btn">
                         <a href="#" role="button" class="btn btn-info btn-xs popovers" data-trigger="focus" data-toggle="popover" title=""
-                           data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/administration_gui/index.html#add-a-catalogue' title='test add link'>documentation</a>"
-                           data-original-title="Navigation parameter name (e.g. <strong>'id'</strong>), whose value will give the dataset page (e.g. <strong>'id=1'</strong>)" "><span class="glyphicon glyphicon-question-sign">
+                           data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/scraping/index.html' title='test add link'>documentation</a>"
+                           data-original-title="Navigation parameter type, depending on navigation modes (Dataset Url <strong>Range</strong> or <strong>Pagination</strong>) and parameter type (<strong>Query</strong> or <strong>Path</strong>)"><span class="glyphicon glyphicon-question-sign" />
                         </a>
                     </span>
-
                 </div>
             </div>
         </div>
@@ -69,12 +67,11 @@
                 <div class="col-lg-2">
                     <span class="input-group-btn">
                         <a href="#" role="button" class="btn btn-info btn-xs popovers" data-trigger="focus" data-toggle="popover" title=""
-                           data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/administration_gui/index.html#add-a-catalogue' title='test add link'>documentation</a>"
-                           data-original-title="Navigation parameter name (e.g. <strong>'id'</strong>), whose value will give the dataset page (e.g. <strong>'id=1'</strong>)" "><span class="glyphicon glyphicon-question-sign">
+                           data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/scraping/index.html' title='test add link'>documentation</a>"
+                           data-original-title="Navigation Start Value, start value for the navigation parameter from which dataset urls will start (valid only for <strong>QUERY_RANGE</strong> and <strong>PATH_RANGE</strong> nav types)"><span class="glyphicon glyphicon-question-sign" />
                         </a>
                     </span>
                 </div>
-
             </div>
         </div>
         <div class="form-group" id="edit_sitemap_navParam_endValue_form">
@@ -88,8 +85,8 @@
                 <div class="col-lg-2">
                     <span class="input-group-btn">
                         <a href="#" role="button" class="btn btn-info btn-xs popovers" data-trigger="focus" data-toggle="popover" title=""
-                           data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/administration_gui/index.html#add-a-catalogue' title='test add link'>documentation</a>"
-                           data-original-title="Navigation parameter name (e.g. <strong>'id'</strong>), whose value will give the dataset page (e.g. <strong>'id=1'</strong>)" "><span class="glyphicon glyphicon-question-sign">
+                           data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/scraping/index.html' title='test add link'>documentation</a>"
+                           data-original-title="Navigation End Value, end value for the navigation parameter to which dataset urls will end (valid only for <strong>QUERY_RANGE</strong> and <strong>PATH_RANGE</strong> navigation)"><span class="glyphicon glyphicon-question-sign" />
                         </a>
                     </span>
                 </div>
@@ -107,15 +104,34 @@
                 <div class="col-lg-2">
                     <span class="input-group-btn">
                         <a href="#" role="button" class="btn btn-info btn-xs popovers" data-trigger="focus" data-toggle="popover" title=""
-                           data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/administration_gui/index.html#add-a-catalogue' title='test add link'>documentation</a>"
-                           data-original-title="Pages Number, explictly set the pages number of datasets list">
-                            <span class="glyphicon glyphicon-question-sign">
+                           data-content="See also <a target='_blank' href=https://idra.readthedocs.io/en/latest/admin/scraping/index.html' title='test add link'>documentation</a>"
+                           data-original-title="Pages Number, explictly set the number of pages when the navigation is a paginated list of datasets (valid only for <strong>QUERY_PAGE</strong> and <strong>PATH_PAGE</strong> navigation)">
+                            <span class="glyphicon glyphicon-question-sign" />
                         </a>
                     </span>
                 </div>
             </div>
         </div>
 
+        <div class="form-group" id="edit_sitemap_navParam_datasetsPerPage_form">
+            <label for="edit_sitemap_navParam_datasetsPerPage" class="col-lg-1 control-label">
+                Nav Datasets per Page
+            </label>
+            <div class="input-group col-lg-3">
+                <div class="col-lg-10">
+                    <input type="text" class="form-control" name="navParamDatasetsPerPage" id="edit_sitemap_navParam_datasetsPerPage" placeholder="Navigation Parameter Datasets per Page" value="{{navParamDatasetsPerPage}}">
+                </div>
+                <div class="col-lg-2">
+                    <span class="input-group-btn">
+                        <a href="#" role="button" class="btn btn-info btn-xs popovers" data-trigger="focus" data-toggle="popover" title=""
+                           data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/scraping/index.html' title='test add link'>documentation</a>"
+                           data-original-title="Datasets number per Page, this parameter is used as multiplier for the page parameter in the url, used when the pagination parameter represents the datasets offset (e.g. <strong>Last Page</strong> value = 500, 10 datasets per page -> 50 pages)">
+                            <span class="glyphicon glyphicon-question-sign" />
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
         {{#startUrl.push}}
         {{#startUrl}}
         <div class="form-group">
@@ -147,8 +163,8 @@
                 <div class="col-lg-2">
                     <span class="input-group-btn">
                         <a href="#" role="button" class="btn btn-info btn-xs popovers" data-trigger="focus" data-toggle="popover" title=""
-                           data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/administration_gui/index.html#add-a-catalogue' title='test add link'>documentation</a>"
-                           data-original-title="Navigation parameter name (e.g. <strong>'id'</strong>), whose value will give the dataset page (e.g. <strong>'id=1'</strong>)" "><span class="glyphicon glyphicon-question-sign">
+                           data-content="See also <a target='_blank' href='https://idra.readthedocs.io/en/latest/admin/scraping/index.html' title='test add link'>documentation</a>"
+                           data-original-title="Base Url to which will be appended the Nav Parameter, depending on Navigation modes (<strong>RANGE</strong>: Base url for datasets urls, <strong>PAGE</strong>: Base Url for paginated list of datasets"><span class="glyphicon glyphicon-question-sign" />
                         </a>
                     </span>
                 </div>
@@ -168,14 +184,16 @@
 
 </div>
 <script>
-    $(document).ready(function () {
+    var initEditSitemapMetadataNavigationParams = function () {
         $('[data-toggle="tooltip"]').tooltip();
         $("[data-toggle=popover]").popover({ html: true, container: 'body' });
 
         var currentNavParamType = $("#edit_sitemap_navParam_type").val();
 
-        if (currentNavParamType == "QUERY_RANGE" || currentNavParamType == "PATH_RANGE")
+        if (currentNavParamType == "QUERY_RANGE" || currentNavParamType == "PATH_RANGE") {
             $('#edit_sitemap_navParam_pagesNumber_form').css('display', 'none');
+            $('#edit_sitemap_navParam_datasetsPerPage_form').css('display', 'none');
+        }
 
         $("#edit_sitemap_navParam_type").change(function () {
             var selectedType = $(this).val();
@@ -185,6 +203,7 @@
                 $('#edit_sitemap_navParam_endValue_form').css('display', 'none');
                 $("#edit_sitemap_navParam_startValue").val("0");
                 $('#edit_sitemap_navParam_pagesNumber_form').show();
+                $('#edit_sitemap_navParam_datasetsPerPage_form').show();
             }
 
             if (selectedType == "QUERY_RANGE" || selectedType == "PATH_RANGE") {
@@ -193,9 +212,13 @@
                 $('#edit_sitemap_navParam_endValue_form').show();
                 $("#edit_sitemap_navParam_startValue").val("0");
                 $('#edit_sitemap_navParam_pagesNumber_form').hide();
+                $('#edit_sitemap_navParam_datasetsPerPage_form').hide();
             }
 
         });
 
-    });
+    };
+        $(document).ready(initEditSitemapMetadataNavigationParams);
+
+
 </script>
