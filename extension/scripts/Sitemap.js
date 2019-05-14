@@ -206,7 +206,8 @@ Sitemap.prototype = {
             type: sitemapObj.navParamType,
             startValue: sitemapObj.navParamStartValue,
             endValue: sitemapObj.navParamEndValue,
-            pagesNumber: sitemapObj.pagesNumber,
+            pagesNumber: parseInt(sitemapObj.navParamPagesNumber),
+            datasetsPerPage: parseInt(sitemapObj.navParamDatasetsPerPage),
             pageSelectors: pageSelectors
         };
 
