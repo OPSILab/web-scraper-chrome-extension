@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "\\extension",
+    "\\extension\\assets",
+    "\\extension\\assets\\bootstrap-3.0.0",
+    "\\extension\\assets\\bootstrap-3.0.0\\js",
+    "\\extension\\assets\\jquery.bootstrapvalidator",
+    "\\extension\\background_page",
+    "\\extension\\content_script",
+    "\\extension\\devtools",
+    "\\extension\\scripts"
+  ],
+  "PreviewInSolutionExplorer": false
+}

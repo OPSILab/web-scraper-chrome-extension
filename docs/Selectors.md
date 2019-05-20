@@ -15,39 +15,8 @@ For example [Text selector] [text-selector] extracts text from
 selected element. These selectors can be used as data extraction selectors:
 
  * [Text selector] [text-selector]
- * [Link selector] [link-selector]
- * [Link popup selector] [link-popup-selector]
- * [Image selector] [image-selector]
- * [Table selector] [table-selector]
  * [Element attribute selector] [element-attribute-selector]
- * [HTML selector] [html-selector]
- * [Grouped selector] [grouped-selector]
 
-### Link selectors
-
-Link selectors extract URLs from links that can be later opened for data
-extraction. For example if in a sitemap tree there is a *Link selector* that has
-3 child text selectors then the Web Scraper extract all urls with the *Link
-selector* and then open each link and use those child data extraction selectors
-to extract data. Of course a link selector might have *Link selectors* as child
-selectors then these child *Link selectors* would be used for further page
-navigation. These are currently available *Link selectors*:
-
- * [Link selector] [link-selector]
- * [Link popup selector] [link-popup-selector]
-
-### Element selectors
-
-Element selectors are for element selection that contain multiple data elements.
-For example an element selector might be used to select a list of items in an
-e-commerce site. The selector will return each selected element as a parent
-element to its child selectors. Element selectors child selectors will 
-extract data only within the element that the element selector gave them.
-These are currently available Element selectors:
-
- * [Element selector] [element-selector]
- * [Element scroll down selector] [element-scroll-selector]
- * [Element click selector] [element-click-selector]
 
 ## Selector configuration options
 
@@ -58,9 +27,7 @@ selectors documentation.
  * selector - CSS selector that selects an element the selector will be working
  on.
  * multiple - should be checked when multiple records (data rows) are going to
- be extracted with this selector. Data extracted from two or more selectors with 
- multiple checked wont be merged in a single record.
- * delay - delay before selector is being used.
+ be extracted with this selector.
  * parent selectors - configure parent selectors for this selector to make the
 selector tree.
 
@@ -75,7 +42,7 @@ as child selectors to the element selector with multiple option not checked.
  [link-selector]: Selectors/Link%20Selector.md
  [link-popup-selector]: Selectors/Link%20Popup%20Selector.md
  [image-selector]: Selectors/Image%20selector.md
- [element-attribute-selector]: Selectors/Table%20selector.md
+ [element-attribute-selector]: Selectors/Element%20attribute%20selector.md
  [table-selector]: Selectors/Table%20selector.md
  [grouped-selector]: Selectors/Grouped%20selector.md
  [html-selector]: Selectors/HTML%20selector.md
