@@ -3,8 +3,7 @@
 Text selector is used for text selection. The text selector will extract text
 from the selected element and from all its child elements. HTML will be
 stripped and only text will be returned. Selector will ignore text within
-`<script>` and `<style>` tags. New line `<br>` tags will be replaced with
-newline characters. You can additionally apply a regular expression to
+`<script>` and `<style>` tags. You can additionally apply a regular expression to
 resulting data.
 
 ## Configuration options
@@ -12,9 +11,7 @@ resulting data.
  * selector - [CSS selector] [css-selector] for the element from which data
  will be extracted.
  * multiple - multiple records are being extracted. Usually should not be
- checked. If you want to use multiple text selectors within one page with
- multiple checked then you might actually need
- [Element selector] [element-selector].
+ checked.
  * regex - regular expression to extract a substring from the result.
 
 ### Regex
@@ -35,23 +32,15 @@ Here are some examples that you might find useful:
 ## Use cases
 **Extract one record per page with multiple text selectors**
 
-For example you are scraping news site that has one article per page. The page
-might contain the article, its title, date published and the author. A
-*Link selector* can navigate the scraper to each of these article pages.
-Multiple text selectors can extract the title, date, author and article.
+For example you are scraping a Web site that has one Open Dataset per page. The page
+might contain the dataset, its title, description, dates, author and other metadata. The
+*datasetLink selector* can navigate the scraper to each of these article pages.
+The text selectors can extract the title, dates, etc.
 *Multiple* option should be left unchecked for text selectors because each page
 is extracting only one record.
 
 ![Fig. 1: Multiple text selectors per page][text-selector-multiple-single-text-selectors-in-one-page]
 
-**Extract multiple items with multiple text selectors per page**
-
-E-commerce sites usually have multiple items per page. If you want to scrape
-these items you will need an *Element selector* that selects item wrapper
-elements and multiple text selectors that select data within each item wrapper
-element.
-
-![Fig. 2: Multiple elements with text selectors. Some arrows are skipped.][text-selector-multiple-elements-with-text-selectors]
 
 **Extract multiple text records per page**
 

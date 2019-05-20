@@ -7,7 +7,7 @@ this link: `<a href="#" title="my title">link<a>`.
  * selector - [CSS selector] [css-selector] for the element.
  * multiple - multiple records are being extracted.
  * attribute name - the attribute that is going to be extracted. For example
- `title`, `data-id`.
+ `title`, `href`.
 
 ## Use cases
 See [Text selector] [text-selector] use cases.

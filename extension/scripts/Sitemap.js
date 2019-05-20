@@ -6,13 +6,17 @@ Sitemap.prototype = {
 
     initData: function (sitemapObj) {
 
-
+        //this.datasetSelectors = new Array();
+        //this.pageSelectors = new Array();
 
         //for (var key in sitemapObj) {
 
         //    if (key != 'datasetSelectors' && key != 'pageSelectors')
         //        this[key] = sitemapObj[key];
-
+        //    else if (key == 'datasetSelectors') {
+        //        for
+        //        this.datasetSelectors.push(this)
+        //    }
         //}
 
         //if (sitemapObj) {

@@ -1,23 +1,23 @@
 {
 	"manifest_version": 2,
 	"version": "0.2.0.11",
-	"name": "Web Scraper",
-	"short_name": "Web Scraper",
-	"description": "Tool for data extraction from websites",
+	"name": "Idra Sitemap Creator",
+	"short_name": "Idra Sitemap Creator",
+	"description": "Tool for the Sitemap Creation for Idra",
 	"permissions": ["<all_urls>", "tabs", "notifications", "storage", "unlimitedStorage", "downloads"],
 	"icons": {
 		"16": "assets/images/icon16.png",
 		"48": "assets/images/icon48.png",
 		"128": "assets/images/icon128.png"
 	},
-	"browser_action": {
-		"default_icon": {
-			"19": "assets/images/icon19.png",
-			"38": "assets/images/icon38.png"
-		},
-		"default_title": "Web Scraper",
-		"default_popup": "popup.html"
-	},
+  "browser_action": {
+    "default_icon": {
+      "19": "assets/images/icon19.png",
+      "38": "assets/images/icon38.png"
+    },
+    "default_title": "Idra Sitemap Creator",
+    "default_popup": "popup.html"
+  },
 	"options_page": "options_page/options.html",
 	"devtools_page": "devtools/devtools_init_page.html",
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
