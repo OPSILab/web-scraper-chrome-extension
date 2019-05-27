@@ -1357,8 +1357,8 @@ SitemapController.prototype = {
         return parentSelectorIds;
     },
     previewSelectorData: function (sitemap, selectorId) {
-
-        // data preview will be base on how the selector tree is opened
+        
+         // data preview will be base on how the selector tree is opened
         var parentSelectorIds = this.getStateParentSelectorIds();
 
         var request = {
@@ -1367,6 +1367,8 @@ SitemapController.prototype = {
             parentSelectorIds: parentSelectorIds,
             selectorId: selectorId
         };
+
+ 
         chrome.runtime.sendMessage(request, function (response) {
 
             if (response.length === 0) {

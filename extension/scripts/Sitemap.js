@@ -6,35 +6,22 @@ Sitemap.prototype = {
 
     initData: function (sitemapObj) {
 
-        //this.datasetSelectors = new Array();
-        //this.pageSelectors = new Array();
-
-        //for (var key in sitemapObj) {
-
-        //    if (key != 'datasetSelectors' && key != 'pageSelectors')
-        //        this[key] = sitemapObj[key];
-        //    else if (key == 'datasetSelectors') {
-        //        for
-        //        this.datasetSelectors.push(this)
-        //    }
-        //}
-
-        //if (sitemapObj) {
-        //    var datasetSelectors = sitemapObj.datasetSelectors;
-        //    var pageSelectors = sitemapObj.pageSelectors;
-        //}
-
-        //if (datasetSelectors && pageSelectors) {
-        //    this.selectors = new SelectorList(datasetSelectors.concat(pageSelectors));
-        //    alert("concatenated Selectors:" + JSON.stringify(this.selectors));
-        //}
-
-
+        this.selectors = new Array();
         for (var key in sitemapObj) {
-            this[key] = sitemapObj[key];
+
+            if (key != 'datasetSelectors' && key != 'pageSelectors')
+                this[key] = sitemapObj[key];
+            else if (key == 'datasetSelectors') {
+                let selArray = sitemapObj[key];
+                for (let sel of selArray)
+                    this.selectors.push(sel);
+            } else if (key == 'pageSelectors') {
+                let selArray = sitemapObj[key];
+                for (let sel of selArray)
+                    this.selectors.push(sel);
+            }
         }
 
-        var selectors = this.selectors;
         this.selectors = new SelectorList(this.selectors);
 
     },
