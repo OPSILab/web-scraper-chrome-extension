@@ -1,6 +1,6 @@
 {
 	"manifest_version": 2,
-	"version": "0.2.0.11",
+	"version": "2.0.1",
 	"name": "Idra Sitemap Creator",
 	"short_name": "Idra Sitemap Creator",
 	"description": "Tool for the Sitemap Creation for Idra",
