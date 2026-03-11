@@ -275,15 +275,24 @@ SitemapController.prototype = {
 	 */
     isValidForm: function () {
         var validator = this.getFormValidator();
-
-        //validator.validate();
-        // validate method calls submit which is not needed in this case.
-        for (var field in validator.options.fields) {
-            validator.validateField(field);
+        if (!validator) {
+            // Try to (re)initialize validation for the current view
+            this.initSitemapValidation && this.initSitemapValidation();
+            validator = this.getFormValidator();
+            if (!validator) {
+                // If a validator is still not available, assume valid to avoid blocking actions
+                return true;
+            }
         }
 
-        var valid = validator.isValid();
-        return valid;
+        // Validate all fields without submitting
+        if (validator.options && validator.options.fields) {
+            for (var field in validator.options.fields) {
+                validator.validateField(field);
+            }
+        }
+
+        return validator.isValid();
     },
 
 	/**
@@ -408,9 +417,9 @@ SitemapController.prototype = {
         this.setActiveNavigationButton("sitemaps");
 
         this.store.getAllSitemaps(function (sitemaps) {
-            $sitemapListPanel = ich.SitemapList();
+            var $sitemapListPanel = ich.SitemapList();
             sitemaps.forEach(function (sitemap) {
-                $sitemap = ich.SitemapListItem(sitemap);
+                var $sitemap = ich.SitemapListItem(sitemap);
                 $sitemap.data("sitemap", sitemap);
                 $sitemapListPanel.find("tbody").append($sitemap);
             });
@@ -519,8 +528,54 @@ SitemapController.prototype = {
         var sitemap = this.state.currentSitemap;
         var $sitemapMetadataForm = ich.SitemapEditMetadata(sitemap);
         $("#viewport").html($sitemapMetadataForm);
-        $("#edit_sitemap_navParam_type").val(sitemap.navParamType);
-        $("#edit_sitemap_navParam_type").change();
+        // initialize tooltips and popovers for help icons
+        $('[data-toggle="tooltip"]').tooltip();
+        $("[data-toggle=popover]").popover({ html: true, container: 'body' });
+
+        // initialize navigation parameter UI logic (moved from inline script)
+        var initNavUi = function () {
+            var applyVisibility = function (selectedType) {
+                if (selectedType === "QUERY_PAGE" || selectedType === "PATH_PAGE") {
+                    $('#edit_sitemap_navParam_startValue_form').hide();
+                    $('#edit_sitemap_navParam_endValue_form').hide();
+                    $("#edit_sitemap_navParam_startValue").val("0");
+                    $('#edit_sitemap_navParam_pagesNumber_form').show();
+                    $('#edit_sitemap_navParam_datasetsPerPage_form').show();
+                } else if (selectedType === "QUERY_RANGE" || selectedType === "PATH_RANGE") {
+                    $('#edit_sitemap_navParam_startValue_form').show();
+                    $('#edit_sitemap_navParam_endValue_form').show();
+                    $("#edit_sitemap_navParam_startValue").val("0");
+                    $('#edit_sitemap_navParam_pagesNumber_form').hide();
+                    $('#edit_sitemap_navParam_datasetsPerPage_form').hide();
+                }
+            };
+
+            var $type = $("#edit_sitemap_navParam_type");
+            $type.off('change.idra').on('change.idra', function() {
+                applyVisibility($(this).val());
+                updateNavHints();
+            });
+            // set initial value and apply
+            $type.val(sitemap.navParamType);
+            applyVisibility($type.val());
+        };
+        initNavUi();
+        // Dynamic hint for PAGE navigation when pagesNumber is empty and missing selectors
+        var updateNavHints = function() {
+            $("#edit-sitemap .nav-hint").remove();
+            var selectedType = $("#edit_sitemap_navParam_type").val();
+            var pagesNumber = $("#edit_sitemap_navParam_pagesNumber").val();
+            if ((selectedType === 'QUERY_PAGE' || selectedType === 'PATH_PAGE') && (!pagesNumber || isNaN(parseInt(pagesNumber)))) {
+                var hasLastPage = !!(sitemap.selectors && sitemap.selectors.getSelectorById && sitemap.selectors.getSelectorById('lastPage'));
+                var hasDatasetLink = !!(sitemap.selectors && sitemap.selectors.getSelectorById && sitemap.selectors.getSelectorById('datasetLink'));
+                if (!(hasLastPage && hasDatasetLink)) {
+                    var $hint = $('<div class="alert alert-info nav-hint" role="alert">For PAGE navigation, specify <strong>Pages Number</strong> or add selectors <strong>lastPage</strong> and <strong>datasetLink</strong> to avoid export errors.</div>');
+                    $('#edit-sitemap-metadata-form').prepend($hint);
+                }
+            }
+        };
+        $(document).off('input.idra change.idra', '#edit_sitemap_navParam_pagesNumber').on('input.idra change.idra', '#edit_sitemap_navParam_pagesNumber', updateNavHints);
+        updateNavHints();
         this.initMultipleStartUrlHelper();
         this.initSitemapValidation();
     
@@ -536,6 +591,19 @@ SitemapController.prototype = {
             return false;
         }
 
+        // Additional validation for PAGE navigation: require pagesNumber
+        // OR presence of 'lastPage' and 'datasetLink' selectors (same rule enforced in export).
+        var isPageNav = (sitemapData.navParamType === 'QUERY_PAGE' || sitemapData.navParamType === 'PATH_PAGE');
+        var pagesNumberEmpty = !sitemapData.navParamPagesNumber || isNaN(parseInt(sitemapData.navParamPagesNumber));
+        if (isPageNav && pagesNumberEmpty) {
+            var hasLastPage = !!sitemap.selectors.getSelectorById && !!sitemap.selectors.getSelectorById('lastPage');
+            var hasDatasetLink = !!sitemap.selectors.getSelectorById && !!sitemap.selectors.getSelectorById('datasetLink');
+            if (!(hasLastPage && hasDatasetLink)) {
+                alert("Invalid Sitemap: lastPage and datasetLink selectors are mandatory for Page navigation type, if pagesNumber is not specified!");
+                return false;
+            }
+        }
+
         // check whether sitemap with this id already exist
         this.store.sitemapExists(sitemapData.id, function (sitemapExists) {
             if (sitemap._id !== sitemapData.id && sitemapExists) {
@@ -543,7 +611,6 @@ SitemapController.prototype = {
                 validator.updateStatus('_id', 'INVALID', 'callback');
                 return;
             }
-
 
             // change data
             sitemap.startUrl = sitemapData.startUrl;
@@ -554,10 +621,9 @@ SitemapController.prototype = {
             sitemap.navParamPagesNumber = sitemapData.navParamPagesNumber;
             sitemap.navParamDatasetsPerPage = sitemapData.navParamDatasetsPerPage;
 
-
-            // just change sitemaps url
+            // just change sitemap if id unchanged
             if (sitemapData.id === sitemap._id) {
-                this.store.saveSitemap(sitemap, function (sitemap) {
+                this.store.saveSitemap(sitemap, function () {
                     this.showSitemapSelectorList();
                 }.bind(this));
             }
@@ -573,7 +639,6 @@ SitemapController.prototype = {
                     }.bind(this));
                 }.bind(this));
             }
-
         }.bind(this));
     },
 
@@ -1122,6 +1187,17 @@ SitemapController.prototype = {
 
         deferredSelector.done(function (result) {
 
+            if (!result || typeof result.CSSSelector === 'undefined') {
+                if (result && result.error) {
+                    console.warn('Selection error:', result.error);
+                    alert('Selection error: ' + result.error);
+                } else {
+                    console.warn('Selector selection did not return a CSSSelector', result);
+                    alert('Selection did not start correctly. Try clicking Select again on a normal page (not chrome://).');
+                }
+                return;
+            }
+
             $(input).val(result.CSSSelector);
 
             // update validation for selector field
@@ -1145,7 +1221,14 @@ SitemapController.prototype = {
                 }.bind(this));
             }
 
-        }.bind(this));
+        }.bind(this)).fail(function(err){
+            if (err && err.message) {
+                console.warn('Select failed:', err.message);
+            } else {
+                console.warn('Select failed:', err);
+            }
+            alert('Unable to start selection on this page. Check page permissions and try again.');
+        });
     },
 
     getCurrentStateParentSelectorIds: function () {

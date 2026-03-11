@@ -1,16 +1,35 @@
 var config = new Config();
 var store;
-config.loadConfiguration(function () {
-	console.log("initial configuration", config);
-	store = new Store(config);
-});
+var isStoreReady = false;
 
-chrome.storage.onChanged.addListener(function () {
-	config.loadConfiguration(function () {
-		console.log("configuration changed", config);
+function initStoreFromConfig() {
+	try {
+		console.log("initial configuration", config);
 		store = new Store(config);
+		isStoreReady = true;
+	} catch (e) {
+		console.error("Failed to initialize Store", e);
+	}
+}
+
+try {
+	config.loadConfiguration(function () {
+		initStoreFromConfig();
 	});
-});
+} catch (e) {
+	console.error("Failed to load configuration", e);
+}
+
+// In offscreen documents some chrome.* events may be unavailable at load time.
+// If storage.onChanged exists, use it; otherwise rely on service worker broadcast.
+if (chrome.storage && chrome.storage.onChanged) {
+	chrome.storage.onChanged.addListener(function () {
+		config.loadConfiguration(function () {
+			console.log("configuration changed", config);
+			initStoreFromConfig();
+		});
+	});
+}
 
 var sendToActiveTab = function(request, callback) {
 	chrome.tabs.query({
@@ -31,6 +50,30 @@ chrome.runtime.onMessage.addListener(
 	function (request, sender, sendResponse) {
 
 		console.log("chrome.runtime.onMessage", request);
+
+		// If message is intended to be handled by the service worker bridge,
+		// ignore it here to avoid double responses.
+		if (request && request.__serviceBridge) {
+			return false;
+		}
+
+		// Service worker broadcast for config changes
+		if (request && request.__configChanged) {
+			config.loadConfiguration(function () {
+				console.log("configuration changed (broadcast)", config);
+				initStoreFromConfig();
+				sendResponse && sendResponse();
+			});
+			return true;
+		}
+
+		if (!isStoreReady) {
+			// Retry shortly if store not yet initialized
+			setTimeout(function(){
+				chrome.runtime.sendMessage(request, sendResponse);
+			}, 50);
+			return true;
+		}
 
 		if (request.createSitemap) {
 			store.createSitemap(request.sitemap, sendResponse);

@@ -24,7 +24,7 @@ ChromePopupBrowser.prototype = {
 			return;
 		}
 
-		chrome.windows.create({'type': 'popup', width: 1042, height: 768, focused: true, url: 'chrome://newtab'}, function (window) {
+		chrome.windows.create({type: 'popup', width: 1042, height: 768, focused: true, url: 'about:blank'}, function (window) {
 			browser.window = window;
 			browser.tab = window.tabs[0];
 

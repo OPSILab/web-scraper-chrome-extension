@@ -26,16 +26,35 @@ chrome.runtime.onMessage.addListener(
 		// Universal ContentScript communication handler
 		else if(request.contentScriptCall) {
 
-			var contentScript = getContentScript("ContentScript");
+				try {
+					var contentScript = getContentScript("ContentScript");
 
-			console.log("received ContentScript request", request);
+					console.log("received ContentScript request", request);
 
-			var deferredResponse = contentScript[request.fn](request.request);
-			deferredResponse.done(function(response) {
-				sendResponse(response);
-			});
+					if (!contentScript || typeof contentScript[request.fn] !== 'function') {
+						sendResponse({ error: 'Invalid content script function: ' + request.fn });
+						return true;
+					}
 
-			return true;
+					var deferredResponse = contentScript[request.fn](request.request);
+					if (!deferredResponse || typeof deferredResponse.done !== 'function') {
+						sendResponse({ error: 'Content script did not return a Deferred' });
+						return true;
+					}
+
+					deferredResponse.done(function(response) {
+						sendResponse(response);
+					}).fail(function(err){
+						try {
+							sendResponse({ error: err });
+						} catch (_e) {}
+					});
+
+					return true;
+				} catch (e) {
+					try { sendResponse({ error: e && e.message ? e.message : e }); } catch (_e) {}
+					return true;
+				}
 		}
 	}
 );

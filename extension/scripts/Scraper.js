@@ -87,38 +87,28 @@ Scraper.prototype = {
 
 					var deferredBlob = Base64.base64ToBlob(imageBase64, record['_imageMimeType-'+selectorId]);
 
+					// Build a data URL to avoid relying on window.URL APIs in MV3 offscreen
+					var mime = record['_imageMimeType-'+selectorId];
+					var dataUrl = 'data:' + mime + ';base64,' + imageBase64;
+
 					delete record['_imageMimeType-'+selectorId];
 					delete record['_imageBase64-'+selectorId];
 
-					deferredBlob.done(function(blob) {
+					var fileSavePath = this.sitemap._id+'/'+selectorId+'/'+this.getFileFilename(record[selectorId+'-src']);
 
-						var downloadUrl =  window.URL.createObjectURL(blob);
-						var fileSavePath = this.sitemap._id+'/'+selectorId+'/'+this.getFileFilename(record[selectorId+'-src']);
-
-						// download image using chrome api
-						var downloadRequest = {
-							url: downloadUrl,
-							filename: fileSavePath
-						};
-
-						// wait for the download to finish
-						chrome.downloads.download(downloadRequest, function(downloadId) {
-							var cbDownloaded = function(downloadItem) {
-								if(downloadItem.id === downloadId && downloadItem.state) {
-									if(downloadItem.state.current === "complete") {
-										deferredDownloadDone.resolve();
-										chrome.downloads.onChanged.removeListener(cbDownloaded);
-									}
-									else if(downloadItem.state.current === "interrupted") {
-										deferredDownloadDone.reject("download failed");
-										chrome.downloads.onChanged.removeListener(cbDownloaded);
-									}
-								}
-							};
-
-							chrome.downloads.onChanged.addListener(cbDownloaded);
-						});
-					}.bind(this));
+					// Delegate the download to the service worker (MV3-safe)
+					chrome.runtime.sendMessage({
+						__downloadDataUrl: true,
+						url: dataUrl,
+						filename: fileSavePath
+					}, function(response) {
+						if(response && response.status === 'ok') {
+							deferredDownloadDone.resolve();
+						}
+						else {
+							deferredDownloadDone.reject("download failed");
+						}
+					});
 
 					return deferredDownloadDone.promise();
 

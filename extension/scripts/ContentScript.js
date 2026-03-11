@@ -128,6 +128,11 @@ var getContentScript = function(location) {
 						request: request
 					};
 
+					// In DevTools context, target the inspected tab explicitly
+					if (location === "DevTools" && chrome.devtools && chrome.devtools.inspectedWindow) {
+						reqToContentScript.tabId = chrome.devtools.inspectedWindow.tabId;
+					}
+
 					return backgroundScript.executeContentScript(reqToContentScript);
 				};
 			}

@@ -21,20 +21,39 @@ Config.prototype = {
 	 */
 	loadConfiguration: function (callback) {
 
-		chrome.storage.sync.get(['sitemapDb', 'dataDb', 'storageType'], function (items) {
+		// Make callback optional and robust
+		if (typeof callback !== 'function') {
+			callback = function () {};
+		}
 
-			this.storageType = items.storageType || this.defaults.storageType;
-			if (this.storageType === 'local') {
-				this.sitemapDb = this.defaults.sitemapDb;
-				this.dataDb = this.defaults.dataDb;
-			}
-			else {
-				this.sitemapDb = items.sitemapDb || this.defaults.sitemapDb;
-				this.dataDb = items.dataDb || this.defaults.dataDb;
-			}
+		try {
+			var defaults = {
+				sitemapDb: this.defaults.sitemapDb,
+				dataDb: this.defaults.dataDb,
+				storageType: this.defaults.storageType
+			};
+			chrome.storage.sync.get(defaults, function (items) {
+				items = items || defaults;
+				this.storageType = items.storageType || this.defaults.storageType;
+				if (this.storageType === 'local') {
+					this.sitemapDb = this.defaults.sitemapDb;
+					this.dataDb = this.defaults.dataDb;
+				}
+				else {
+					this.sitemapDb = items.sitemapDb || this.defaults.sitemapDb;
+					this.dataDb = items.dataDb || this.defaults.dataDb;
+				}
 
-			callback();
-		}.bind(this));
+				callback();
+			}.bind(this));
+		}
+		catch (e) {
+			// Fallback to defaults if storage access fails
+			this.storageType = this.defaults.storageType;
+			this.sitemapDb = this.defaults.sitemapDb;
+			this.dataDb = this.defaults.dataDb;
+			try { callback(); } catch (_) {}
+		}
 	},
 
 	/**

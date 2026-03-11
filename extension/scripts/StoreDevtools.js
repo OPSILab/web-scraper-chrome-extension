@@ -12,13 +12,31 @@ StoreDevtools.prototype = {
 
 		var request = {
 			createSitemap: true,
-			sitemap: JSON.parse(JSON.stringify(sitemap))
+			sitemap: JSON.parse(JSON.stringify(sitemap)),
+			__serviceBridge: true
 		};
 
-		chrome.runtime.sendMessage(request, function (callbackFn, originalSitemap, newSitemap) {
+		// Use background script proxy in DevTools context
+		var bg = getBackgroundScript("DevTools");
+		if (!chrome.runtime || !chrome.runtime.sendMessage) {
+			console.error('chrome.runtime.sendMessage is unavailable in DevTools context');
+			alert('Extension messaging is unavailable. Reload the extension and DevTools pane.');
+			return;
+		}
+		try {
+			chrome.runtime.sendMessage(request, function (callbackFn, originalSitemap, newSitemap) {
+			if (!newSitemap) {
+				console.warn('createSitemap returned empty response');
+				callbackFn(originalSitemap);
+				return;
+			}
 			originalSitemap._rev = newSitemap._rev;
 			callbackFn(originalSitemap);
 		}.bind(this, callback, sitemap));
+		} catch (e) {
+			console.error('sendMessage failed:', e);
+			alert('Messaging failed. Please reload DevTools and try again.');
+		}
 	},
 	saveSitemap: function (sitemap, callback) {
 		this.createSitemap(sitemap, callback);
@@ -27,19 +45,39 @@ StoreDevtools.prototype = {
 
 		var request = {
 			deleteSitemap: true,
-			sitemap: JSON.parse(JSON.stringify(sitemap))
+			sitemap: JSON.parse(JSON.stringify(sitemap)),
+			__serviceBridge: true
 		};
-		chrome.runtime.sendMessage(request, function (response) {
-			callback();
-		});
+		var bg = getBackgroundScript("DevTools");
+		if (!chrome.runtime || !chrome.runtime.sendMessage) {
+			console.error('chrome.runtime.sendMessage is unavailable');
+			alert('Messaging unavailable. Reload DevTools.');
+			return;
+		}
+		try {
+			chrome.runtime.sendMessage(request, function (response) {
+				callback();
+			});
+		} catch (e) {
+			console.error('sendMessage failed:', e);
+			alert('Messaging failed. Please reload DevTools and try again.');
+		}
 	},
 	getAllSitemaps: function (callback) {
 
 		var request = {
 			getAllSitemaps: true
 		};
+		request.__serviceBridge = true;
 
-		chrome.runtime.sendMessage(request, function (response) {
+		var bg = getBackgroundScript("DevTools");
+		if (!chrome.runtime || !chrome.runtime.sendMessage) {
+			console.error('chrome.runtime.sendMessage is unavailable');
+			alert('Messaging unavailable. Reload DevTools.');
+			return;
+		}
+		try {
+			chrome.runtime.sendMessage(request, function (response) {
 
 			var sitemaps = [];
 
@@ -48,26 +86,54 @@ StoreDevtools.prototype = {
 			}
 			callback(sitemaps);
 		});
+		} catch (e) {
+			console.error('sendMessage failed:', e);
+			alert('Messaging failed. Please reload DevTools and try again.');
+		}
 	},
 	getSitemapData: function (sitemap, callback) {
 		var request = {
 			getSitemapData: true,
-			sitemap: JSON.parse(JSON.stringify(sitemap))
+			sitemap: JSON.parse(JSON.stringify(sitemap)),
+			__serviceBridge: true
 		};
 
-		chrome.runtime.sendMessage(request, function (response) {
-			callback(response);
-		});
+		var bg = getBackgroundScript("DevTools");
+		if (!chrome.runtime || !chrome.runtime.sendMessage) {
+			console.error('chrome.runtime.sendMessage is unavailable');
+			alert('Messaging unavailable. Reload DevTools.');
+			return;
+		}
+		try {
+			chrome.runtime.sendMessage(request, function (response) {
+				callback(response);
+			});
+		} catch (e) {
+			console.error('sendMessage failed:', e);
+			alert('Messaging failed. Please reload DevTools and try again.');
+		}
 	},
 	sitemapExists: function (sitemapId, callback) {
 
 		var request = {
 			sitemapExists: true,
-			sitemapId: sitemapId
+			sitemapId: sitemapId,
+			__serviceBridge: true
 		};
 
-		chrome.runtime.sendMessage(request, function (response) {
-			callback(response);
-		});
+		var bg = getBackgroundScript("DevTools");
+		if (!chrome.runtime || !chrome.runtime.sendMessage) {
+			console.error('chrome.runtime.sendMessage is unavailable');
+			alert('Messaging unavailable. Reload DevTools.');
+			return;
+		}
+		try {
+			chrome.runtime.sendMessage(request, function (response) {
+				callback(response);
+			});
+		} catch (e) {
+			console.error('sendMessage failed:', e);
+			alert('Messaging failed. Please reload DevTools and try again.');
+		}
 	}
 };

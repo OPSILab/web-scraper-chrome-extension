@@ -1,63 +1,55 @@
 {
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"version": "2.0.1",
 	"name": "Idra Sitemap Creator",
 	"short_name": "Idra Sitemap Creator",
 	"description": "Tool for the Sitemap Creation for Idra",
-	"permissions": ["<all_urls>", "tabs", "notifications", "storage", "unlimitedStorage", "downloads"],
 	"icons": {
 		"16": "assets/images/icon16.png",
 		"48": "assets/images/icon48.png",
 		"128": "assets/images/icon128.png"
 	},
-  "browser_action": {
-    "default_icon": {
-      "19": "assets/images/icon19.png",
-      "38": "assets/images/icon38.png"
-    },
-    "default_title": "Idra Sitemap Creator",
-    "default_popup": "popup.html"
-  },
+	"action": {
+		"default_icon": {
+			"19": "assets/images/icon19.png",
+			"38": "assets/images/icon38.png"
+		},
+		"default_title": "Idra Sitemap Creator",
+		"default_popup": "popup.html"
+	},
 	"options_page": "options_page/options.html",
 	"devtools_page": "devtools/devtools_init_page.html",
-	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"background": {
-		"scripts": [
-			"assets/jquery-2.0.3.js",
-			"assets/jquery.whencallsequentially.js",
-			"assets/pouchdb-nightly.min.js",
-			"assets/base64.js",
-			"scripts/Selector.js",
-			"scripts/Selector/SelectorElement.js",
-			"scripts/Selector/SelectorGroup.js",
-			"scripts/Selector/SelectorLink.js",
-			"scripts/Selector/SelectorPopupLink.js",
-			"scripts/Selector/SelectorText.js",
-			"scripts/Selector/SelectorImage.js",
-			"scripts/Selector/SelectorHTML.js",
-			"scripts/Selector/SelectorElementAttribute.js",
-			"scripts/Selector/SelectorTable.js",
-			"scripts/Selector/SelectorElementScroll.js",
-			"scripts/Selector/SelectorElementClick.js",
-			"scripts/SelectorList.js",
-			"scripts/Sitemap.js",
-			"scripts/Queue.js",
-			"scripts/Job.js",
-			"scripts/Scraper.js",
-			"scripts/ChromePopupBrowser.js",
-			"scripts/Config.js",
-			"scripts/Store.js",
-			"scripts/ContentScript.js",
-			"scripts/BackgroundScript.js",
-			"background_page/background_script.js"
-		]
+		"service_worker": "service_worker.js"
+	},
+	"permissions": [
+		"tabs",
+		"notifications",
+		"storage",
+		"unlimitedStorage",
+		"downloads",
+		"scripting",
+		"offscreen"
+	],
+	"host_permissions": [
+		"<all_urls>"
+	],
+	"content_security_policy": {
+		"extension_pages": "script-src 'self'; object-src 'self'"
 	},
 	"web_accessible_resources": [
-		"assets/images/icon16.png",
-		"assets/images/icon48.png",
-		"assets/images/icon128.png",
-		"assets/images/icon19.png",
-		"assets/images/icon38.png"
+		{
+			"resources": [
+				"assets/images/icon16.png",
+				"assets/images/icon48.png",
+				"assets/images/icon128.png",
+				"assets/images/icon19.png",
+				"assets/images/icon38.png"
+			],
+			"matches": [
+				"<all_urls>"
+			]
+		}
 	],
 	"content_scripts": [
 		{

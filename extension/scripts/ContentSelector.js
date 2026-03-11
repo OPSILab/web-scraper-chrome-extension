@@ -8,8 +8,8 @@ ContentSelector = function(options) {
 	// deferred response
 	this.deferredCSSSelectorResponse = $.Deferred();
 
-	this.allowedElements = options.allowedElements;
-	this.parentCSSSelector = options.parentCSSSelector.trim();
+	this.allowedElements = options.allowedElements || '*';
+	this.parentCSSSelector = (options.parentCSSSelector || '').trim();
 	this.alert = options.alert || function(txt) {alert(txt);};
 
 	if(this.parentCSSSelector) {
@@ -17,9 +17,9 @@ ContentSelector = function(options) {
 
 		//  handle situation when parent selector not found
 		if(this.parent === undefined) {
-			this.deferredCSSSelectorResponse.reject("parent selector not found");
-			this.alert("Parent element not found!");
-			return;
+			// Fallback to body instead of failing, so selection can start
+			this.parent = $("body")[0];
+			this.alert("Parent element not found. Falling back to full page selection.");
 		}
 	}
 	else {
